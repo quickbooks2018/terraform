@@ -82,3 +82,26 @@ This repository contains Terraform configurations and commands for managing infr
 - Use `terraform show` to inspect the current state after deployment.
 
 For more detailed information, refer to the [official Terraform documentation](https://www.terraform.io/docs/index.html).
+
+### Senstitve Data
+
+In Terraform, the `sensitive = true` argument is used to mark a resource attribute or output as sensitive. When an attribute or output is marked as sensitive, Terraform ensures that the value is not displayed in the CLI output or logs, helping to prevent accidental exposure of sensitive information (e.g., passwords, secret tokens, or keys).
+
+Here's how it works:
+
+### Example:
+```hcl
+output "database_password" {
+  value     = aws_db_instance.example.password
+  sensitive = true
+}
+```
+
+In this example, the output of `database_password` is marked as sensitive, which means Terraform will not display the actual password value in its output during the `terraform apply` or `terraform plan` processes.
+
+### Key Points:
+- It is used to prevent sensitive information from being exposed in logs, command output, and state files.
+- Marking something as `sensitive = true` doesn't fully encrypt the data, but it masks it from being displayed in the terminal.
+- Terraform state files still contain the sensitive values, so protecting access to the state files is critical.
+
+It’s a useful practice when working with secrets or any other information that needs to remain confidential during the Terraform execution process.
